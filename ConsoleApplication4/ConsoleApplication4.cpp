@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <stack>
+#include <queue>
 using namespace std;
 void ShowLst(vector<vector<int>> list)
 {
@@ -62,8 +63,29 @@ void dfs(vector <vector<int>> list, vector <vector<bool>> visited, int v)
 	ShowMtrx(visited);
 	cout << count << endl;
 }
-void bfs()
+void bfs(vector <vector<int>> list, vector <vector<bool>> visited, int v)
 {
+	int count = 1;
+	queue<int> plan;
+	visited[v][v] = 1;
+	for (int i = 0; i < list[v].size(); i++)
+		plan.push(list[v][i]);
+	while (!plan.empty())
+	{
+		if (visited[plan.front()][plan.front()] == 0)
+		{
+			visited[plan.front()][plan.front()] = 1;
+			count++;
+			int current = plan.front();
+			plan.pop();
+			for (int i = 0; i < list[current].size(); i++)
+				plan.push(list[current][i]);
+		}
+		else
+			plan.pop();
+	}
+	ShowMtrx(visited);
+	cout << count << endl;
 
 }
 int main()
@@ -78,6 +100,7 @@ int main()
 	cout << endl;
 	ShowMtrx(Convert(lst));
 	dfs(lst, Convert(lst), 1);
+	bfs(lst, Convert(lst), 3);
 	return 0;
 }
 
