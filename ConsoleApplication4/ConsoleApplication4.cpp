@@ -1,16 +1,18 @@
 ﻿#include <iostream>
 #include <vector>
 #include <string>
+#include <stack>
 using namespace std;
 void ShowLst(vector<vector<int>> list)
 {
 	for (int i = 0; i < list.size(); i++)
 	{
 		cout << i << ": ";
-		for(int k = 0; k < list[i].size(); k++)
-		cout << list[i][k] << ", ";
+		for (int k = 0; k < list[i].size(); k++)
+			cout << list[i][k] << ", ";
 		cout << endl;
 	}
+	cout << endl;
 }
 void ShowMtrx(vector<vector<bool>> matrix)
 {
@@ -22,11 +24,12 @@ void ShowMtrx(vector<vector<bool>> matrix)
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 vector<vector<bool>> Convert(vector<vector<int>> list)
 {
 	vector<vector<bool>> matrix = vector<vector<bool>>(list.size(), vector<bool>(list.size()));
-	for(int i = 0; i < list.size(); i++)
+	for (int i = 0; i < list.size(); i++)
 	{
 		for (int k = 0; k < list[i].size(); k++)
 		{
@@ -35,7 +38,31 @@ vector<vector<bool>> Convert(vector<vector<int>> list)
 	}
 	return matrix;
 }
-void dfs()
+void dfs(vector <vector<int>> list, vector <vector<bool>> visited, int v)
+{
+	int count = 1;
+	stack<int> plan;
+	visited[v][v] = 1;
+	for (int i = 0; i< list[v].size(); i++)
+		plan.push(list[v][i]);
+	while (!plan.empty())
+	{
+		if (visited[plan.top()][plan.top()] == 0)
+		{
+			visited[plan.top()][plan.top()] = 1;
+			count++;
+			int current = plan.top();
+			plan.pop();
+			for (int i = 0; i < list[current].size(); i++)
+				plan.push(list[current][i]);
+		}
+		else
+			plan.pop();
+	}
+	ShowMtrx(visited);
+	cout << count << endl;
+}
+void bfs()
 {
 
 }
@@ -50,5 +77,7 @@ int main()
 	ShowLst(lst);
 	cout << endl;
 	ShowMtrx(Convert(lst));
+	dfs(lst, Convert(lst), 1);
+	return 0;
 }
 
